@@ -69,6 +69,8 @@ namespace MsCrmTools.FormAttributeManager.UserControls
         {
             infoPanel = InformationPanel.GetInformationPanel(ParentForm, "Loading entities...", 340, 150);
 
+            cbbEntities.Items.Clear();
+
             var worker = new BackgroundWorker();
             worker.DoWork += worker_DoWork;
             worker.RunWorkerCompleted += worker_RunWorkerCompleted;
