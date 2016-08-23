@@ -30,7 +30,7 @@ namespace MsCrmTools.FormParameterManager
         {
             get { return "https://github.com/MscrmTools/MsCrmTools.FormRelated/wiki"; }
         }
-    {
+    
         #region Constructor
 
         /// <summary>

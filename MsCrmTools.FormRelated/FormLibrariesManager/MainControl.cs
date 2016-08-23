@@ -34,7 +34,7 @@ namespace MsCrmTools.FormLibrariesManager
         {
             get { return "https://github.com/MscrmTools/MsCrmTools.FormRelated/wiki"; }
         }
-    {
+    
         #region Constructor
 
         /// <summary>
