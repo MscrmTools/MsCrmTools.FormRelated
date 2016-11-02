@@ -153,5 +153,15 @@ namespace MsCrmTools.FormLibrariesManager.UserControls
         {
             CheckTreeNode(e.Node);
         }
+
+        private void llExpand_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
+        {
+            ScriptsTreeView.ExpandAll();
+        }
+
+        private void llCollapse_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
+        {
+            ScriptsTreeView.CollapseAll();
+        }
     }
 }

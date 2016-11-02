@@ -75,7 +75,7 @@ namespace MsCrmTools.FormLibrariesManager.AppCode
         {
             var qe = new QueryExpression("systemform")
             {
-                ColumnSet = new ColumnSet(new[] { "name", "formxml", "objecttypecode" }),
+                ColumnSet = new ColumnSet(new[] { "name", "formxml", "objecttypecode", "type" }),
                 Criteria = new FilterExpression
                 {
                     Conditions =

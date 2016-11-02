@@ -71,7 +71,8 @@
             this.tsbRemoveCheckedScripts});
             this.toolStripMenu.Location = new System.Drawing.Point(0, 0);
             this.toolStripMenu.Name = "toolStripMenu";
-            this.toolStripMenu.Size = new System.Drawing.Size(911, 25);
+            this.toolStripMenu.Padding = new System.Windows.Forms.Padding(0, 0, 2, 0);
+            this.toolStripMenu.Size = new System.Drawing.Size(1366, 32);
             this.toolStripMenu.TabIndex = 2;
             this.toolStripMenu.Text = "toolStrip1";
             // 
@@ -81,49 +82,49 @@
             this.tsbClose.Image = ((System.Drawing.Image)(resources.GetObject("tsbClose.Image")));
             this.tsbClose.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.tsbClose.Name = "tsbClose";
-            this.tsbClose.Size = new System.Drawing.Size(23, 22);
+            this.tsbClose.Size = new System.Drawing.Size(28, 29);
             this.tsbClose.Text = "Close this tool";
             this.tsbClose.Click += new System.EventHandler(this.TsbCloseClick);
             // 
             // toolStripSeparator1
             // 
             this.toolStripSeparator1.Name = "toolStripSeparator1";
-            this.toolStripSeparator1.Size = new System.Drawing.Size(6, 25);
+            this.toolStripSeparator1.Size = new System.Drawing.Size(6, 32);
             // 
             // tsbLoadLibrariesAndScripts
             // 
             this.tsbLoadLibrariesAndScripts.Image = ((System.Drawing.Image)(resources.GetObject("tsbLoadLibrariesAndScripts.Image")));
             this.tsbLoadLibrariesAndScripts.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.tsbLoadLibrariesAndScripts.Name = "tsbLoadLibrariesAndScripts";
-            this.tsbLoadLibrariesAndScripts.Size = new System.Drawing.Size(159, 22);
+            this.tsbLoadLibrariesAndScripts.Size = new System.Drawing.Size(239, 29);
             this.tsbLoadLibrariesAndScripts.Text = "Load Libraries and Forms";
             this.tsbLoadLibrariesAndScripts.Click += new System.EventHandler(this.tsbLoadLibrariesAndScripts_Click);
             // 
             // toolStripSeparator2
             // 
             this.toolStripSeparator2.Name = "toolStripSeparator2";
-            this.toolStripSeparator2.Size = new System.Drawing.Size(6, 25);
+            this.toolStripSeparator2.Size = new System.Drawing.Size(6, 32);
             // 
             // tsbAddCheckedScripts
             // 
             this.tsbAddCheckedScripts.Image = ((System.Drawing.Image)(resources.GetObject("tsbAddCheckedScripts.Image")));
             this.tsbAddCheckedScripts.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.tsbAddCheckedScripts.Name = "tsbAddCheckedScripts";
-            this.tsbAddCheckedScripts.Size = new System.Drawing.Size(133, 22);
+            this.tsbAddCheckedScripts.Size = new System.Drawing.Size(199, 29);
             this.tsbAddCheckedScripts.Text = "Add checked scripts";
             this.tsbAddCheckedScripts.Click += new System.EventHandler(this.tsbAddCheckedScripts_Click);
             // 
             // toolStripSeparator3
             // 
             this.toolStripSeparator3.Name = "toolStripSeparator3";
-            this.toolStripSeparator3.Size = new System.Drawing.Size(6, 25);
+            this.toolStripSeparator3.Size = new System.Drawing.Size(6, 32);
             // 
             // tsbRemoveCheckedScripts
             // 
             this.tsbRemoveCheckedScripts.Image = ((System.Drawing.Image)(resources.GetObject("tsbRemoveCheckedScripts.Image")));
             this.tsbRemoveCheckedScripts.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.tsbRemoveCheckedScripts.Name = "tsbRemoveCheckedScripts";
-            this.tsbRemoveCheckedScripts.Size = new System.Drawing.Size(154, 22);
+            this.tsbRemoveCheckedScripts.Size = new System.Drawing.Size(229, 29);
             this.tsbRemoveCheckedScripts.Text = "Remove checked scripts";
             this.tsbRemoveCheckedScripts.Click += new System.EventHandler(this.tsbRemoveCheckedScripts_Click);
             // 
@@ -144,8 +145,9 @@
             this.columnHeader3,
             this.columnHeader4});
             this.lvLogs.Location = new System.Drawing.Point(0, 0);
+            this.lvLogs.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.lvLogs.Name = "lvLogs";
-            this.lvLogs.Size = new System.Drawing.Size(911, 281);
+            this.lvLogs.Size = new System.Drawing.Size(1364, 430);
             this.lvLogs.TabIndex = 5;
             this.lvLogs.UseCompatibleStateImageBehavior = false;
             this.lvLogs.View = System.Windows.Forms.View.Details;
@@ -175,7 +177,8 @@
             this.splitContainer1.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.splitContainer1.Location = new System.Drawing.Point(0, 28);
+            this.splitContainer1.Location = new System.Drawing.Point(0, 43);
+            this.splitContainer1.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.splitContainer1.Name = "splitContainer1";
             this.splitContainer1.Orientation = System.Windows.Forms.Orientation.Horizontal;
             // 
@@ -186,14 +189,16 @@
             // splitContainer1.Panel2
             // 
             this.splitContainer1.Panel2.Controls.Add(this.lvLogs);
-            this.splitContainer1.Size = new System.Drawing.Size(911, 569);
-            this.splitContainer1.SplitterDistance = 385;
+            this.splitContainer1.Size = new System.Drawing.Size(1366, 875);
+            this.splitContainer1.SplitterDistance = 592;
+            this.splitContainer1.SplitterWidth = 6;
             this.splitContainer1.TabIndex = 6;
             // 
             // splitContainer2
             // 
             this.splitContainer2.Dock = System.Windows.Forms.DockStyle.Fill;
             this.splitContainer2.Location = new System.Drawing.Point(0, 0);
+            this.splitContainer2.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.splitContainer2.Name = "splitContainer2";
             // 
             // splitContainer2.Panel1
@@ -203,40 +208,41 @@
             // splitContainer2.Panel2
             // 
             this.splitContainer2.Panel2.Controls.Add(this.crmForms1);
-            this.splitContainer2.Size = new System.Drawing.Size(911, 385);
-            this.splitContainer2.SplitterDistance = 435;
+            this.splitContainer2.Size = new System.Drawing.Size(1366, 592);
+            this.splitContainer2.SplitterDistance = 652;
+            this.splitContainer2.SplitterWidth = 6;
             this.splitContainer2.TabIndex = 0;
             // 
             // crmScriptsTreeView1
             // 
-            this.crmScriptsTreeView1.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
+            this.crmScriptsTreeView1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.crmScriptsTreeView1.Location = new System.Drawing.Point(0, 0);
+            this.crmScriptsTreeView1.Margin = new System.Windows.Forms.Padding(6, 8, 6, 8);
             this.crmScriptsTreeView1.Name = "crmScriptsTreeView1";
             this.crmScriptsTreeView1.Service = null;
-            this.crmScriptsTreeView1.Size = new System.Drawing.Size(433, 385);
+            this.crmScriptsTreeView1.Size = new System.Drawing.Size(652, 592);
             this.crmScriptsTreeView1.TabIndex = 3;
             // 
             // crmForms1
             // 
-            this.crmForms1.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
+            this.crmForms1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.crmForms1.Location = new System.Drawing.Point(0, 0);
+            this.crmForms1.Margin = new System.Windows.Forms.Padding(6, 8, 6, 8);
             this.crmForms1.Name = "crmForms1";
+            this.crmForms1.Plugin = null;
             this.crmForms1.Service = null;
-            this.crmForms1.Size = new System.Drawing.Size(472, 385);
+            this.crmForms1.Size = new System.Drawing.Size(708, 592);
             this.crmForms1.TabIndex = 4;
             // 
             // MainControl
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 20F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.Controls.Add(this.splitContainer1);
             this.Controls.Add(this.toolStripMenu);
+            this.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.Name = "MainControl";
-            this.Size = new System.Drawing.Size(911, 600);
+            this.Size = new System.Drawing.Size(1366, 923);
             this.toolStripMenu.ResumeLayout(false);
             this.toolStripMenu.PerformLayout();
             this.splitContainer1.Panel1.ResumeLayout(false);

@@ -42,6 +42,7 @@ namespace MsCrmTools.FormLibrariesManager.UserControls
             {
                 var item = new ListViewItem(form.GetAttributeValue<string>("objecttypecode"));
                 item.SubItems.Add(form.GetAttributeValue<string>("name"));
+                item.SubItems.Add(form.GetAttributeValue<OptionSetValue>("type").Value == 2 ? "Main" : "Quick Create");
                 item.Tag = form;
 
                 lvForms.Items.Add(item);
