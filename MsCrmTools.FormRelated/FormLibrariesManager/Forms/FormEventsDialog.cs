@@ -46,7 +46,7 @@ namespace MsCrmTools.FormRelated.FormLibrariesManager.Forms
             //e.Row.Cells["Enabled"]
             //formEvent.Enabled = true;
             //formEvent.PassExecutionContext = true;
-            e.Row.Cells[scriptDataGridViewTextBoxColumn.Name].Value = Scripts.Last().Name;
+            e.Row.Cells[scriptDataGridViewTextBoxColumn.Name].Value = Scripts.LastOrDefault()?.Name;
             e.Row.Cells[IsEnabled.Name].Value = true;
             e.Row.Cells[PassExecutionContext.Name].Value = true;
         }
