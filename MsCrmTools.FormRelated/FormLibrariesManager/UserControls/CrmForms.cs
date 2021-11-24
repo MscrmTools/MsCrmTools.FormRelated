@@ -1,6 +1,7 @@
 ﻿using Microsoft.Xrm.Sdk;
 using MsCrmTools.FormLibrariesManager.AppCode;
 using MsCrmTools.FormLibrariesManager.Forms;
+using MsCrmTools.FormRelated.Common;
 using MsCrmTools.FormRelated.FormLibrariesManager.Forms;
 using System;
 using System.Collections.Generic;

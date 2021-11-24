@@ -1,13 +1,15 @@
 ﻿using McTools.Xrm.Connection;
 using Microsoft.Crm.Sdk.Messages;
 using Microsoft.Xrm.Sdk;
+using Microsoft.Xrm.Sdk.Messages;
+using Microsoft.Xrm.Sdk.Metadata.Query;
 using Microsoft.Xrm.Sdk.Query;
+using MsCrmTools.FormRelated.FormLibrariesManager.POCO;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Windows.Forms;
 using System.Xml;
-using MsCrmTools.FormRelated.FormLibrariesManager.POCO;
 
 namespace MsCrmTools.FormLibrariesManager.AppCode
 {
@@ -19,6 +21,27 @@ namespace MsCrmTools.FormLibrariesManager.AppCode
         }
 
         public IOrganizationService Service { get; set; }
+
+        public static XmlNode GetFormLibraries(Entity form)
+        {
+            var formXml = form.GetAttributeValue<string>("formxml");
+            var formDoc = new XmlDocument();
+            formDoc.LoadXml(formXml);
+
+            var formNode = formDoc.SelectSingleNode("form");
+            if (formNode == null)
+            {
+                throw new Exception("Expected node \"formNode\" was not found");
+            }
+
+            var formLibrariesNode = formNode.SelectSingleNode("formLibraries");
+            if (formLibrariesNode == null)
+            {
+                formLibrariesNode = formDoc.CreateElement("formLibraries");
+                formNode.AppendChild(formLibrariesNode);
+            }
+            return formLibrariesNode;
+        }
 
         public void AddLibrary(Entity form, string libraryName, bool addFirst)
         {
@@ -50,28 +73,7 @@ namespace MsCrmTools.FormLibrariesManager.AppCode
             form["formxml"] = formLibrariesNode.OwnerDocument.OuterXml;
         }
 
-        public static XmlNode GetFormLibraries(Entity form)
-        {
-            var formXml = form.GetAttributeValue<string>("formxml");
-            var formDoc = new XmlDocument();
-            formDoc.LoadXml(formXml);
-
-            var formNode = formDoc.SelectSingleNode("form");
-            if (formNode == null)
-            {
-                throw new Exception("Expected node \"formNode\" was not found");
-            }
-
-            var formLibrariesNode = formNode.SelectSingleNode("formLibraries");
-            if (formLibrariesNode == null)
-            {
-                formLibrariesNode = formDoc.CreateElement("formLibraries");
-                formNode.AppendChild(formLibrariesNode);
-            }
-            return formLibrariesNode;
-        }
-
-        public List<Entity> GetAllForms(ConnectionDetail detail)
+        public List<Entity> GetAllForms(ConnectionDetail detail, List<Entity> solutions)
         {
             var qe = new QueryExpression("systemform")
             {
@@ -85,6 +87,54 @@ namespace MsCrmTools.FormLibrariesManager.AppCode
                     }
                 }
             };
+
+            if (solutions?.Count > 0)
+            {
+                var components = Service.RetrieveMultiple(new QueryExpression("solutioncomponent")
+                {
+                    ColumnSet = new ColumnSet("objectid"),
+                    NoLock = true,
+                    Criteria = new FilterExpression
+                    {
+                        Conditions =
+                        {
+                            new ConditionExpression("solutionid", ConditionOperator.In, solutions.Select(s => s.Id).ToArray()),
+                            new ConditionExpression("componenttype", ConditionOperator.Equal, 1)
+                        }
+                    }
+                }).Entities;
+
+                var list = components.Select(component => component.GetAttributeValue<Guid>("objectid"))
+                    .ToList();
+
+                if (list.Count > 0)
+                {
+                    EntityQueryExpression entityQueryExpression = new EntityQueryExpression
+                    {
+                        Criteria = new MetadataFilterExpression(LogicalOperator.Or),
+                        Properties = new MetadataPropertiesExpression("DisplayName", "LogicalName", "SchemaName", "IsActivity", "ObjectTypeCode")
+                    };
+
+                    list.ForEach(id =>
+                    {
+                        entityQueryExpression.Criteria.Conditions.Add(new MetadataConditionExpression("MetadataId", MetadataConditionOperator.Equals, id));
+                    });
+
+                    RetrieveMetadataChangesRequest retrieveMetadataChangesRequest = new RetrieveMetadataChangesRequest
+                    {
+                        Query = entityQueryExpression,
+                        ClientVersionStamp = null
+                    };
+
+                    var resp = (RetrieveMetadataChangesResponse)Service.Execute(retrieveMetadataChangesRequest);
+
+                    qe.Criteria.AddFilter(new FilterExpression(LogicalOperator.Or));
+                    foreach (var emd in resp.EntityMetadata)
+                    {
+                        qe.Criteria.Filters.First().AddCondition("objecttypecode", ConditionOperator.Equal, emd.ObjectTypeCode.Value);
+                    }
+                }
+            }
 
             if (detail.OrganizationMajorVersion > 5)
             {
@@ -126,7 +176,8 @@ namespace MsCrmTools.FormLibrariesManager.AppCode
             if (handlerEventNodes != null && handlerEventNodes.Count > 0)
             {
                 var result = DialogResult.None;
-                parentForm.Invoke((MethodInvoker)delegate {
+                parentForm.Invoke((MethodInvoker)delegate
+                {
                     result = MessageBox.Show(parentForm, string.Format(
                         "The library '{2}' is used by {0} event{1}. If you remove the library, {0} event{1} will be removed too\r\n\r\nDo you want to continue?",
                         handlerEventNodes.Count, handlerEventNodes.Count > 1 ? "s" : "", libraryName)
@@ -156,11 +207,10 @@ namespace MsCrmTools.FormLibrariesManager.AppCode
                             // Remove Event since it only has one handler and it is being removed, but there are other events
                             events.RemoveChild(handlerNode.ParentNode.ParentNode);
                         }
-
                     }
                     else
                     {
-                        // Remove only handler since there are other handlers 
+                        // Remove only handler since there are other handlers
                         handlerNode.ParentNode.RemoveChild(handlerNode);
                     }
                 }
@@ -220,6 +270,13 @@ namespace MsCrmTools.FormLibrariesManager.AppCode
             UpdateForm(form);
         }
 
+        private static void AddAttribute(XmlNode eventNode, string name, string value)
+        {
+            var attribute = eventNode.OwnerDocument.CreateAttribute(name);
+            attribute.Value = value;
+            eventNode.Attributes.Append(attribute);
+        }
+
         private static void AddFormEvents(XmlNode formNode, string eventName, List<FormEvent> formEvents)
         {
             if (formEvents.Count == 0)
@@ -250,13 +307,6 @@ namespace MsCrmTools.FormLibrariesManager.AppCode
                 AddAttribute(handler, "passExecutionContext", formEvent.PassExecutionContext.ToString().ToLower());
                 handlers.AppendChild(handler);
             }
-        }
-
-        private static void AddAttribute(XmlNode eventNode, string name, string value)
-        {
-            var attribute = eventNode.OwnerDocument.CreateAttribute(name);
-            attribute.Value = value;
-            eventNode.Attributes.Append(attribute);
         }
 
         private static void RemoveAllNodesForEvent(XmlNode formNode, string eventName)

@@ -13,6 +13,16 @@ namespace MsCrmTools.FormAttributeManager
 {
     public partial class MainControl : PluginControlBase, IGitHubPlugin, IHelpPlugin
     {
+        public MainControl()
+        {
+            InitializeComponent();
+        }
+
+        public string HelpUrl
+        {
+            get { return "https://github.com/MscrmTools/MsCrmTools.FormRelated/wiki"; }
+        }
+
         public string RepositoryName
         {
             get { return "MsCrmTools.FormRelated"; }
@@ -21,16 +31,6 @@ namespace MsCrmTools.FormAttributeManager
         public string UserName
         {
             get { return "MscrmTools"; }
-        }
-
-        public string HelpUrl
-        {
-            get { return "https://github.com/MscrmTools/MsCrmTools.FormRelated/wiki"; }
-        }
-
-        public MainControl()
-        {
-            InitializeComponent();
         }
 
         private void AddLogItem(string entity, string form, string message, bool isError)
@@ -104,10 +104,10 @@ namespace MsCrmTools.FormAttributeManager
             }
         }
 
-        private void LoadEntities()
+        private void LoadEntities(bool fromSolution)
         {
             attributeSelector1.Service = Service;
-            attributeSelector1.LoadEntities();
+            attributeSelector1.LoadEntities(fromSolution);
         }
 
         private void removeFromFormToolStripMenuItem_Click(object sender, EventArgs e)
@@ -150,7 +150,7 @@ namespace MsCrmTools.FormAttributeManager
 
         private void tsbLoadEntities_Click(object sender, EventArgs e)
         {
-            ExecuteMethod(LoadEntities);
+            ExecuteMethod(LoadEntities, false);
         }
 
         private void tsbPublish_Click(object sender, EventArgs e)
@@ -207,6 +207,18 @@ namespace MsCrmTools.FormAttributeManager
                     }
                 }
             });
+        }
+
+        private void tsddbLoad_DropDownItemClicked(object sender, ToolStripItemClickedEventArgs e)
+        {
+            if (e.ClickedItem == tsmiLoadAll)
+            {
+                ExecuteMethod(LoadEntities, false);
+            }
+            else if (e.ClickedItem == tsmiLoadFromSolution)
+            {
+                ExecuteMethod(LoadEntities, true);
+            }
         }
 
         private void tsmiDisableFieldDisplay_Click(object sender, EventArgs e)

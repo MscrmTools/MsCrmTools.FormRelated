@@ -3,8 +3,10 @@
 // CODEPLEX: http://xrmtoolbox.codeplex.com
 // BLOG: http://mscrmtools.blogspot.com
 
+using Microsoft.Xrm.Sdk;
 using MsCrmTools.FormParameterManager.AppCode;
 using MsCrmTools.FormParameterManager.Forms;
+using MsCrmTools.FormRelated.Common;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -16,6 +18,11 @@ namespace MsCrmTools.FormParameterManager
 {
     public partial class MainControl : PluginControlBase, IGitHubPlugin, IHelpPlugin
     {
+        public string HelpUrl
+        {
+            get { return "https://github.com/MscrmTools/MsCrmTools.FormRelated/wiki"; }
+        }
+
         public string RepositoryName
         {
             get { return "MsCrmTools.FormRelated"; }
@@ -26,11 +33,6 @@ namespace MsCrmTools.FormParameterManager
             get { return "MscrmTools"; }
         }
 
-        public string HelpUrl
-        {
-            get { return "https://github.com/MscrmTools/MsCrmTools.FormRelated/wiki"; }
-        }
-    
         #region Constructor
 
         /// <summary>
@@ -61,8 +63,21 @@ namespace MsCrmTools.FormParameterManager
 
         #region Load Forms
 
-        private void LoadForms()
+        private void LoadForms(bool fromSolution)
         {
+            List<Entity> solutions = new List<Entity>();
+
+            if (fromSolution)
+            {
+                var dialog = new SolutionPicker(Service);
+                if (dialog.ShowDialog(this) != DialogResult.OK)
+                {
+                    return;
+                }
+
+                solutions.AddRange(dialog.SelectedSolutions);
+            }
+
             // Clear listviews
             lvForms.Items.Clear();
             lvParameters.Items.Clear();
@@ -74,7 +89,7 @@ namespace MsCrmTools.FormParameterManager
                 Message = "Loading forms...",
                 Work = (bw, e) =>
                 {
-                    IEnumerable<CrmForm> forms = CrmForm.GetForms(Service, bw);
+                    IEnumerable<CrmForm> forms = CrmForm.GetForms(Service, solutions, bw);
                     var items = new List<ListViewItem>();
 
                     foreach (var form in forms)
@@ -104,11 +119,6 @@ namespace MsCrmTools.FormParameterManager
                 },
                 ProgressChanged = e => { SetWorkingMessage(e.UserState.ToString()); }
             });
-        }
-
-        private void tsbLoadForms_Click(object sender, EventArgs e)
-        {
-            ExecuteMethod(LoadForms);
         }
 
         #endregion Load Forms
@@ -335,5 +345,17 @@ namespace MsCrmTools.FormParameterManager
         }
 
         #endregion ListViews events
+
+        private void tsddbLoad_DropDownItemClicked(object sender, ToolStripItemClickedEventArgs e)
+        {
+            if (e.ClickedItem == tsmiLoadAll)
+            {
+                ExecuteMethod(LoadForms, false);
+            }
+            else if (e.ClickedItem == tsmiLoadFromSolution)
+            {
+                ExecuteMethod(LoadForms, true);
+            }
+        }
     }
 }

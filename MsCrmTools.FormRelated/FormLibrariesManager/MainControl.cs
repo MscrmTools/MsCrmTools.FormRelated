@@ -6,6 +6,7 @@
 using Microsoft.Xrm.Sdk;
 using MsCrmTools.FormLibrariesManager.AppCode;
 using MsCrmTools.FormLibrariesManager.Forms;
+using MsCrmTools.FormRelated.Common;
 using MsCrmTools.FormRelated.FormLibrariesManager.POCO;
 using System;
 using System.Collections.Generic;
@@ -20,6 +21,11 @@ namespace MsCrmTools.FormLibrariesManager
 {
     public partial class MainControl : PluginControlBase, IGitHubPlugin, IHelpPlugin
     {
+        public string HelpUrl
+        {
+            get { return "https://github.com/MscrmTools/MsCrmTools.FormRelated/wiki"; }
+        }
+
         public string RepositoryName
         {
             get { return "MsCrmTools.FormRelated"; }
@@ -30,11 +36,6 @@ namespace MsCrmTools.FormLibrariesManager
             get { return "MscrmTools"; }
         }
 
-        public string HelpUrl
-        {
-            get { return "https://github.com/MscrmTools/MsCrmTools.FormRelated/wiki"; }
-        }
-    
         #region Constructor
 
         /// <summary>
@@ -171,8 +172,21 @@ namespace MsCrmTools.FormLibrariesManager
             });
         }
 
-        private void LoadLibrariesAndForms()
+        private void LoadLibrariesAndForms(bool fromSolution)
         {
+            List<Entity> solutions = new List<Entity>();
+
+            if (fromSolution)
+            {
+                var dialog = new SolutionPicker(Service);
+                if (dialog.ShowDialog(this) != DialogResult.OK)
+                {
+                    return;
+                }
+
+                solutions.AddRange(dialog.SelectedSolutions);
+            }
+
             WorkAsync(new WorkAsyncInfo
             {
                 Message = "Loading libraries...",
@@ -180,12 +194,12 @@ namespace MsCrmTools.FormLibrariesManager
                 Work = (bw, e) =>
                 {
                     var sManager = new ScriptManager(Service);
-                    var scripts = sManager.GetAllScripts();
+                    var scripts = sManager.GetAllScripts(solutions);
 
                     bw.ReportProgress(0, "Loading forms...");
 
                     var fManager = new FormManager(Service);
-                    var forms = fManager.GetAllForms(ConnectionDetail);
+                    var forms = fManager.GetAllForms(ConnectionDetail, solutions);
 
                     e.Result = new[] { scripts, forms };
 
@@ -336,7 +350,7 @@ namespace MsCrmTools.FormLibrariesManager
 
         private void tsbLoadLibrariesAndScripts_Click(object sender, EventArgs e)
         {
-            ExecuteMethod(LoadLibrariesAndForms);
+            ExecuteMethod(LoadLibrariesAndForms, false);
         }
 
         private void tsbRemoveCheckedScripts_Click(object sender, EventArgs e)
@@ -462,6 +476,18 @@ namespace MsCrmTools.FormLibrariesManager
                 },
                 ProgressChanged = evt => { SetWorkingMessage(evt.UserState.ToString()); }
             });
+        }
+
+        private void tsddbLoad_DropDownItemClicked(object sender, ToolStripItemClickedEventArgs e)
+        {
+            if (e.ClickedItem == tsmiLoadAll)
+            {
+                ExecuteMethod(LoadLibrariesAndForms, false);
+            }
+            else if (e.ClickedItem == tsmiLoadFromSolution)
+            {
+                ExecuteMethod(LoadLibrariesAndForms, true);
+            }
         }
     }
 }

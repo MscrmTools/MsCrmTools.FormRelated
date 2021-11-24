@@ -32,7 +32,9 @@
             this.toolStripMenu = new System.Windows.Forms.ToolStrip();
             this.tsbClose = new System.Windows.Forms.ToolStripButton();
             this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
-            this.tsbLoadEntities = new System.Windows.Forms.ToolStripButton();
+            this.tsddbLoad = new System.Windows.Forms.ToolStripDropDownButton();
+            this.tsmiLoadAll = new System.Windows.Forms.ToolStripMenuItem();
+            this.tsmiLoadFromSolution = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripSeparator2 = new System.Windows.Forms.ToolStripSeparator();
             this.tsbSaveForms = new System.Windows.Forms.ToolStripButton();
             this.tslInfo = new System.Windows.Forms.ToolStripLabel();
@@ -51,6 +53,7 @@
             this.tssbLabel = new System.Windows.Forms.ToolStripSplitButton();
             this.tsmiEnableFieldDisplay = new System.Windows.Forms.ToolStripMenuItem();
             this.tsmiDisableFieldDisplay = new System.Windows.Forms.ToolStripMenuItem();
+            this.updateLabelToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.tssbLock = new System.Windows.Forms.ToolStripSplitButton();
             this.tsmiLockField = new System.Windows.Forms.ToolStripMenuItem();
             this.tsmiUnlockField = new System.Windows.Forms.ToolStripMenuItem();
@@ -65,7 +68,6 @@
             this.columnHeader2 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.columnHeader3 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.columnHeader4 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
-            this.updateLabelToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripMenu.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
@@ -83,7 +85,7 @@
             this.toolStripMenu.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.tsbClose,
             this.toolStripSeparator1,
-            this.tsbLoadEntities,
+            this.tsddbLoad,
             this.toolStripSeparator2,
             this.tsbSaveForms,
             this.tslInfo,
@@ -92,7 +94,7 @@
             this.tsbClearLog});
             this.toolStripMenu.Location = new System.Drawing.Point(0, 0);
             this.toolStripMenu.Name = "toolStripMenu";
-            this.toolStripMenu.Size = new System.Drawing.Size(1171, 27);
+            this.toolStripMenu.Size = new System.Drawing.Size(1317, 34);
             this.toolStripMenu.TabIndex = 3;
             this.toolStripMenu.Text = "toolStrip1";
             // 
@@ -102,35 +104,52 @@
             this.tsbClose.Image = ((System.Drawing.Image)(resources.GetObject("tsbClose.Image")));
             this.tsbClose.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.tsbClose.Name = "tsbClose";
-            this.tsbClose.Size = new System.Drawing.Size(23, 24);
+            this.tsbClose.Size = new System.Drawing.Size(34, 29);
             this.tsbClose.Text = "Close this tool";
             this.tsbClose.Click += new System.EventHandler(this.tsbClose_Click);
             // 
             // toolStripSeparator1
             // 
             this.toolStripSeparator1.Name = "toolStripSeparator1";
-            this.toolStripSeparator1.Size = new System.Drawing.Size(6, 27);
+            this.toolStripSeparator1.Size = new System.Drawing.Size(6, 34);
             // 
-            // tsbLoadEntities
+            // tsddbLoad
             // 
-            this.tsbLoadEntities.Image = ((System.Drawing.Image)(resources.GetObject("tsbLoadEntities.Image")));
-            this.tsbLoadEntities.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.tsbLoadEntities.Name = "tsbLoadEntities";
-            this.tsbLoadEntities.Size = new System.Drawing.Size(114, 24);
-            this.tsbLoadEntities.Text = "Load Entities";
-            this.tsbLoadEntities.Click += new System.EventHandler(this.tsbLoadEntities_Click);
+            this.tsddbLoad.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.tsmiLoadAll,
+            this.tsmiLoadFromSolution});
+            this.tsddbLoad.Image = global::MsCrmTools.FormRelated.Properties.Resources.Dataverse_16x16;
+            this.tsddbLoad.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.tsddbLoad.Name = "tsddbLoad";
+            this.tsddbLoad.Size = new System.Drawing.Size(85, 29);
+            this.tsddbLoad.Text = "Load";
+            this.tsddbLoad.DropDownItemClicked += new System.Windows.Forms.ToolStripItemClickedEventHandler(this.tsddbLoad_DropDownItemClicked);
+            // 
+            // tsmiLoadAll
+            // 
+            this.tsmiLoadAll.Image = global::MsCrmTools.FormRelated.Properties.Resources.Dataverse_16x16;
+            this.tsmiLoadAll.Name = "tsmiLoadAll";
+            this.tsmiLoadAll.Size = new System.Drawing.Size(301, 34);
+            this.tsmiLoadAll.Text = "All entities";
+            // 
+            // tsmiLoadFromSolution
+            // 
+            this.tsmiLoadFromSolution.Image = global::MsCrmTools.FormRelated.Properties.Resources.Dataverse_16x16;
+            this.tsmiLoadFromSolution.Name = "tsmiLoadFromSolution";
+            this.tsmiLoadFromSolution.Size = new System.Drawing.Size(301, 34);
+            this.tsmiLoadFromSolution.Text = "Entities from solution(s)";
             // 
             // toolStripSeparator2
             // 
             this.toolStripSeparator2.Name = "toolStripSeparator2";
-            this.toolStripSeparator2.Size = new System.Drawing.Size(6, 27);
+            this.toolStripSeparator2.Size = new System.Drawing.Size(6, 34);
             // 
             // tsbSaveForms
             // 
             this.tsbSaveForms.Image = ((System.Drawing.Image)(resources.GetObject("tsbSaveForms.Image")));
             this.tsbSaveForms.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.tsbSaveForms.Name = "tsbSaveForms";
-            this.tsbSaveForms.Size = new System.Drawing.Size(102, 24);
+            this.tsbSaveForms.Size = new System.Drawing.Size(121, 29);
             this.tsbSaveForms.Text = "Save forms";
             this.tsbSaveForms.Click += new System.EventHandler(this.tsbSaveForms_Click);
             // 
@@ -138,7 +157,7 @@
             // 
             this.tslInfo.ForeColor = System.Drawing.Color.Red;
             this.tslInfo.Name = "tslInfo";
-            this.tslInfo.Size = new System.Drawing.Size(277, 24);
+            this.tslInfo.Size = new System.Drawing.Size(333, 29);
             this.tslInfo.Text = "(Your changes are not saved to CRM yet)";
             this.tslInfo.ToolTipText = "Click on Save forms to save your changes to CRM";
             this.tslInfo.Visible = false;
@@ -148,21 +167,21 @@
             this.tsbPublish.Image = ((System.Drawing.Image)(resources.GetObject("tsbPublish.Image")));
             this.tsbPublish.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.tsbPublish.Name = "tsbPublish";
-            this.tsbPublish.Size = new System.Drawing.Size(117, 24);
+            this.tsbPublish.Size = new System.Drawing.Size(138, 29);
             this.tsbPublish.Text = "Publish entity";
             this.tsbPublish.Click += new System.EventHandler(this.tsbPublish_Click);
             // 
             // toolStripSeparator3
             // 
             this.toolStripSeparator3.Name = "toolStripSeparator3";
-            this.toolStripSeparator3.Size = new System.Drawing.Size(6, 27);
+            this.toolStripSeparator3.Size = new System.Drawing.Size(6, 34);
             // 
             // tsbClearLog
             // 
             this.tsbClearLog.Image = ((System.Drawing.Image)(resources.GetObject("tsbClearLog.Image")));
             this.tsbClearLog.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.tsbClearLog.Name = "tsbClearLog";
-            this.tsbClearLog.Size = new System.Drawing.Size(89, 24);
+            this.tsbClearLog.Size = new System.Drawing.Size(102, 29);
             this.tsbClearLog.Text = "Clear log";
             this.tsbClearLog.Click += new System.EventHandler(this.tsbClearLog_Click);
             // 
@@ -170,6 +189,7 @@
             // 
             this.splitContainer1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.splitContainer1.Location = new System.Drawing.Point(0, 0);
+            this.splitContainer1.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.splitContainer1.Name = "splitContainer1";
             // 
             // splitContainer1.Panel1
@@ -180,16 +200,17 @@
             // 
             this.splitContainer1.Panel2.Controls.Add(this.listView1);
             this.splitContainer1.Panel2.Controls.Add(this.toolStrip1);
-            this.splitContainer1.Size = new System.Drawing.Size(1171, 460);
-            this.splitContainer1.SplitterDistance = 586;
+            this.splitContainer1.Size = new System.Drawing.Size(1317, 574);
+            this.splitContainer1.SplitterDistance = 659;
             this.splitContainer1.TabIndex = 7;
             // 
             // attributeSelector1
             // 
             this.attributeSelector1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.attributeSelector1.Location = new System.Drawing.Point(0, 0);
+            this.attributeSelector1.Margin = new System.Windows.Forms.Padding(3, 5, 3, 5);
             this.attributeSelector1.Name = "attributeSelector1";
-            this.attributeSelector1.Size = new System.Drawing.Size(586, 460);
+            this.attributeSelector1.Size = new System.Drawing.Size(659, 574);
             this.attributeSelector1.TabIndex = 4;
             this.attributeSelector1.OnAttributeSelected += new System.EventHandler<MsCrmTools.FormAttributeManager.AppCode.AttributeSelectedEventArgs>(this.attributeSelector1_OnAttributeSelected);
             this.attributeSelector1.OnEntitySelected += new System.EventHandler<MsCrmTools.FormAttributeManager.AppCode.EntitySelectedEventArgs>(this.attributeSelector1_OnEntitySelected);
@@ -201,9 +222,11 @@
             this.columnHeader1,
             this.columnHeader5});
             this.listView1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.listView1.Location = new System.Drawing.Point(0, 27);
+            this.listView1.HideSelection = false;
+            this.listView1.Location = new System.Drawing.Point(0, 34);
+            this.listView1.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.listView1.Name = "listView1";
-            this.listView1.Size = new System.Drawing.Size(581, 433);
+            this.listView1.Size = new System.Drawing.Size(654, 540);
             this.listView1.TabIndex = 9;
             this.listView1.UseCompatibleStateImageBehavior = false;
             this.listView1.View = System.Windows.Forms.View.Details;
@@ -229,7 +252,7 @@
             this.tssbVisibility});
             this.toolStrip1.Location = new System.Drawing.Point(0, 0);
             this.toolStrip1.Name = "toolStrip1";
-            this.toolStrip1.Size = new System.Drawing.Size(581, 27);
+            this.toolStrip1.Size = new System.Drawing.Size(654, 34);
             this.toolStrip1.TabIndex = 8;
             this.toolStrip1.Text = "toolStrip1";
             // 
@@ -241,20 +264,20 @@
             this.toolStripDropDownButton1.Image = ((System.Drawing.Image)(resources.GetObject("toolStripDropDownButton1.Image")));
             this.toolStripDropDownButton1.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.toolStripDropDownButton1.Name = "toolStripDropDownButton1";
-            this.toolStripDropDownButton1.Size = new System.Drawing.Size(97, 24);
+            this.toolStripDropDownButton1.Size = new System.Drawing.Size(124, 29);
             this.toolStripDropDownButton1.Text = "Attribute";
             // 
             // removeFromFormToolStripMenuItem
             // 
             this.removeFromFormToolStripMenuItem.Name = "removeFromFormToolStripMenuItem";
-            this.removeFromFormToolStripMenuItem.Size = new System.Drawing.Size(222, 24);
+            this.removeFromFormToolStripMenuItem.Size = new System.Drawing.Size(287, 34);
             this.removeFromFormToolStripMenuItem.Text = "Remove from Form(s)";
             this.removeFromFormToolStripMenuItem.Click += new System.EventHandler(this.removeFromFormToolStripMenuItem_Click);
             // 
             // addToFormsToolStripMenuItem
             // 
             this.addToFormsToolStripMenuItem.Name = "addToFormsToolStripMenuItem";
-            this.addToFormsToolStripMenuItem.Size = new System.Drawing.Size(222, 24);
+            this.addToFormsToolStripMenuItem.Size = new System.Drawing.Size(287, 34);
             this.addToFormsToolStripMenuItem.Text = "Add to Form(s)";
             this.addToFormsToolStripMenuItem.Click += new System.EventHandler(this.addToFormsToolStripMenuItem_Click);
             // 
@@ -267,22 +290,29 @@
             this.tssbLabel.Image = ((System.Drawing.Image)(resources.GetObject("tssbLabel.Image")));
             this.tssbLabel.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.tssbLabel.Name = "tssbLabel";
-            this.tssbLabel.Size = new System.Drawing.Size(77, 24);
+            this.tssbLabel.Size = new System.Drawing.Size(98, 29);
             this.tssbLabel.Text = "Label";
             // 
             // tsmiEnableFieldDisplay
             // 
             this.tsmiEnableFieldDisplay.Name = "tsmiEnableFieldDisplay";
-            this.tsmiEnableFieldDisplay.Size = new System.Drawing.Size(221, 24);
+            this.tsmiEnableFieldDisplay.Size = new System.Drawing.Size(284, 34);
             this.tsmiEnableFieldDisplay.Text = "Display label on form";
             this.tsmiEnableFieldDisplay.Click += new System.EventHandler(this.tsmiEnableFieldDisplay_Click);
             // 
             // tsmiDisableFieldDisplay
             // 
             this.tsmiDisableFieldDisplay.Name = "tsmiDisableFieldDisplay";
-            this.tsmiDisableFieldDisplay.Size = new System.Drawing.Size(221, 24);
+            this.tsmiDisableFieldDisplay.Size = new System.Drawing.Size(284, 34);
             this.tsmiDisableFieldDisplay.Text = "Hide label on form";
             this.tsmiDisableFieldDisplay.Click += new System.EventHandler(this.tsmiDisableFieldDisplay_Click);
+            // 
+            // updateLabelToolStripMenuItem
+            // 
+            this.updateLabelToolStripMenuItem.Name = "updateLabelToolStripMenuItem";
+            this.updateLabelToolStripMenuItem.Size = new System.Drawing.Size(284, 34);
+            this.updateLabelToolStripMenuItem.Text = "Update label";
+            this.updateLabelToolStripMenuItem.Click += new System.EventHandler(this.updateLabelToolStripMenuItem_Click);
             // 
             // tssbLock
             // 
@@ -292,20 +322,20 @@
             this.tssbLock.Image = ((System.Drawing.Image)(resources.GetObject("tssbLock.Image")));
             this.tssbLock.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.tssbLock.Name = "tssbLock";
-            this.tssbLock.Size = new System.Drawing.Size(71, 24);
+            this.tssbLock.Size = new System.Drawing.Size(93, 29);
             this.tssbLock.Text = "Lock";
             // 
             // tsmiLockField
             // 
             this.tsmiLockField.Name = "tsmiLockField";
-            this.tsmiLockField.Size = new System.Drawing.Size(214, 24);
+            this.tsmiLockField.Size = new System.Drawing.Size(277, 34);
             this.tsmiLockField.Text = "Lock field on form";
             this.tsmiLockField.Click += new System.EventHandler(this.tsmiLockField_Click);
             // 
             // tsmiUnlockField
             // 
             this.tsmiUnlockField.Name = "tsmiUnlockField";
-            this.tsmiUnlockField.Size = new System.Drawing.Size(214, 24);
+            this.tsmiUnlockField.Size = new System.Drawing.Size(277, 34);
             this.tsmiUnlockField.Text = "Unlock field on form";
             this.tsmiUnlockField.Click += new System.EventHandler(this.tsmiUnlockField_Click);
             // 
@@ -317,20 +347,20 @@
             this.tssbReadOnly.Image = ((System.Drawing.Image)(resources.GetObject("tssbReadOnly.Image")));
             this.tssbReadOnly.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.tssbReadOnly.Name = "tssbReadOnly";
-            this.tssbReadOnly.Size = new System.Drawing.Size(106, 24);
+            this.tssbReadOnly.Size = new System.Drawing.Size(135, 29);
             this.tssbReadOnly.Text = "Read Only";
             // 
             // tsmiMarkAsReadOnly
             // 
             this.tsmiMarkAsReadOnly.Name = "tsmiMarkAsReadOnly";
-            this.tsmiMarkAsReadOnly.Size = new System.Drawing.Size(229, 24);
+            this.tsmiMarkAsReadOnly.Size = new System.Drawing.Size(294, 34);
             this.tsmiMarkAsReadOnly.Text = "Mark field as read only";
             this.tsmiMarkAsReadOnly.Click += new System.EventHandler(this.tsmiMarkAsReadOnly_Click);
             // 
             // tsmiMarkAsEditable
             // 
             this.tsmiMarkAsEditable.Name = "tsmiMarkAsEditable";
-            this.tsmiMarkAsEditable.Size = new System.Drawing.Size(229, 24);
+            this.tsmiMarkAsEditable.Size = new System.Drawing.Size(294, 34);
             this.tsmiMarkAsEditable.Text = "Mark field as editable";
             this.tsmiMarkAsEditable.Click += new System.EventHandler(this.tsmiMarkAsEditable_Click);
             // 
@@ -342,27 +372,28 @@
             this.tssbVisibility.Image = ((System.Drawing.Image)(resources.GetObject("tssbVisibility.Image")));
             this.tssbVisibility.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.tssbVisibility.Name = "tssbVisibility";
-            this.tssbVisibility.Size = new System.Drawing.Size(94, 24);
+            this.tssbVisibility.Size = new System.Drawing.Size(119, 29);
             this.tssbVisibility.Text = "Visibility";
             // 
             // tsmiMarkAsVisible
             // 
             this.tsmiMarkAsVisible.Name = "tsmiMarkAsVisible";
-            this.tsmiMarkAsVisible.Size = new System.Drawing.Size(302, 24);
+            this.tsmiMarkAsVisible.Size = new System.Drawing.Size(382, 34);
             this.tsmiMarkAsVisible.Text = "Make the field visible on form";
             this.tsmiMarkAsVisible.Click += new System.EventHandler(this.tsmiMarkAsVisible_Click);
             // 
             // tsmiMarkAsNotVisible
             // 
             this.tsmiMarkAsNotVisible.Name = "tsmiMarkAsNotVisible";
-            this.tsmiMarkAsNotVisible.Size = new System.Drawing.Size(302, 24);
+            this.tsmiMarkAsNotVisible.Size = new System.Drawing.Size(382, 34);
             this.tsmiMarkAsNotVisible.Text = "Make the field not visible on form";
             this.tsmiMarkAsNotVisible.Click += new System.EventHandler(this.tsmiMarkAsNotVisible_Click);
             // 
             // splitContainer2
             // 
             this.splitContainer2.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.splitContainer2.Location = new System.Drawing.Point(0, 27);
+            this.splitContainer2.Location = new System.Drawing.Point(0, 34);
+            this.splitContainer2.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.splitContainer2.Name = "splitContainer2";
             this.splitContainer2.Orientation = System.Windows.Forms.Orientation.Horizontal;
             // 
@@ -373,8 +404,9 @@
             // splitContainer2.Panel2
             // 
             this.splitContainer2.Panel2.Controls.Add(this.lvLogs);
-            this.splitContainer2.Size = new System.Drawing.Size(1171, 623);
-            this.splitContainer2.SplitterDistance = 460;
+            this.splitContainer2.Size = new System.Drawing.Size(1317, 778);
+            this.splitContainer2.SplitterDistance = 574;
+            this.splitContainer2.SplitterWidth = 5;
             this.splitContainer2.TabIndex = 8;
             // 
             // lvLogs
@@ -385,9 +417,11 @@
             this.columnHeader4});
             this.lvLogs.Dock = System.Windows.Forms.DockStyle.Fill;
             this.lvLogs.FullRowSelect = true;
+            this.lvLogs.HideSelection = false;
             this.lvLogs.Location = new System.Drawing.Point(0, 0);
+            this.lvLogs.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.lvLogs.Name = "lvLogs";
-            this.lvLogs.Size = new System.Drawing.Size(1171, 159);
+            this.lvLogs.Size = new System.Drawing.Size(1317, 199);
             this.lvLogs.TabIndex = 0;
             this.lvLogs.UseCompatibleStateImageBehavior = false;
             this.lvLogs.View = System.Windows.Forms.View.Details;
@@ -407,21 +441,15 @@
             this.columnHeader4.Text = "Message";
             this.columnHeader4.Width = 300;
             // 
-            // updateLabelToolStripMenuItem
-            // 
-            this.updateLabelToolStripMenuItem.Name = "updateLabelToolStripMenuItem";
-            this.updateLabelToolStripMenuItem.Size = new System.Drawing.Size(221, 24);
-            this.updateLabelToolStripMenuItem.Text = "Update label";
-            this.updateLabelToolStripMenuItem.Click += new System.EventHandler(this.updateLabelToolStripMenuItem_Click);
-            // 
             // MainControl
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 20F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.Controls.Add(this.splitContainer2);
             this.Controls.Add(this.toolStripMenu);
+            this.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.Name = "MainControl";
-            this.Size = new System.Drawing.Size(1171, 650);
+            this.Size = new System.Drawing.Size(1317, 812);
             this.toolStripMenu.ResumeLayout(false);
             this.toolStripMenu.PerformLayout();
             this.splitContainer1.Panel1.ResumeLayout(false);
@@ -444,7 +472,6 @@
         private System.Windows.Forms.ToolStrip toolStripMenu;
         private System.Windows.Forms.ToolStripButton tsbClose;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator1;
-        private System.Windows.Forms.ToolStripButton tsbLoadEntities;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator2;
         private UserControls.AttributeSelector attributeSelector1;
         private System.Windows.Forms.SplitContainer splitContainer1;
@@ -478,5 +505,8 @@
         private System.Windows.Forms.ToolStripLabel tslInfo;
         private System.Windows.Forms.ToolStripButton tsbPublish;
         private System.Windows.Forms.ToolStripMenuItem updateLabelToolStripMenuItem;
+        private System.Windows.Forms.ToolStripDropDownButton tsddbLoad;
+        private System.Windows.Forms.ToolStripMenuItem tsmiLoadAll;
+        private System.Windows.Forms.ToolStripMenuItem tsmiLoadFromSolution;
     }
 }

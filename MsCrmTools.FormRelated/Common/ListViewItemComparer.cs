@@ -2,8 +2,17 @@
 using System.Collections;
 using System.Windows.Forms;
 
-namespace MsCrmTools.FormParameterManager.AppCode
+namespace MsCrmTools.FormRelated.Common
+
 {
+    internal class GroupComparer : IComparer
+    {
+        public int Compare(object objA, object objB)
+        {
+            return String.Compare(((ListViewGroup)objA).Header, ((ListViewGroup)objB).Header, StringComparison.Ordinal);
+        }
+    }
+
     /// <summary>
     /// Compares two listview items for sorting
     /// </summary>
@@ -72,7 +81,6 @@ namespace MsCrmTools.FormParameterManager.AppCode
             {
                 return String.CompareOrdinal(x.SubItems[col].Text, y.SubItems[col].Text);
             }
-
             return String.CompareOrdinal(y.SubItems[col].Text, x.SubItems[col].Text);
         }
 

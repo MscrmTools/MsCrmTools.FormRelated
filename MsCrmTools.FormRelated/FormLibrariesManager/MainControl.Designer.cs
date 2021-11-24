@@ -33,6 +33,9 @@
             this.toolStripMenu = new System.Windows.Forms.ToolStrip();
             this.tsbClose = new System.Windows.Forms.ToolStripButton();
             this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
+            this.tsddbLoad = new System.Windows.Forms.ToolStripDropDownButton();
+            this.tsmiLoadAll = new System.Windows.Forms.ToolStripMenuItem();
+            this.tsmiLoadFromSolution = new System.Windows.Forms.ToolStripMenuItem();
             this.tsbLoadLibrariesAndScripts = new System.Windows.Forms.ToolStripButton();
             this.toolStripSeparator2 = new System.Windows.Forms.ToolStripSeparator();
             this.tsbAddCheckedScripts = new System.Windows.Forms.ToolStripButton();
@@ -64,6 +67,7 @@
             this.toolStripMenu.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.tsbClose,
             this.toolStripSeparator1,
+            this.tsddbLoad,
             this.tsbLoadLibrariesAndScripts,
             this.toolStripSeparator2,
             this.tsbAddCheckedScripts,
@@ -71,8 +75,7 @@
             this.tsbRemoveCheckedScripts});
             this.toolStripMenu.Location = new System.Drawing.Point(0, 0);
             this.toolStripMenu.Name = "toolStripMenu";
-            this.toolStripMenu.Padding = new System.Windows.Forms.Padding(0, 0, 2, 0);
-            this.toolStripMenu.Size = new System.Drawing.Size(1366, 32);
+            this.toolStripMenu.Size = new System.Drawing.Size(1639, 46);
             this.toolStripMenu.TabIndex = 2;
             this.toolStripMenu.Text = "toolStrip1";
             // 
@@ -82,49 +85,75 @@
             this.tsbClose.Image = ((System.Drawing.Image)(resources.GetObject("tsbClose.Image")));
             this.tsbClose.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.tsbClose.Name = "tsbClose";
-            this.tsbClose.Size = new System.Drawing.Size(28, 29);
+            this.tsbClose.Size = new System.Drawing.Size(34, 41);
             this.tsbClose.Text = "Close this tool";
             this.tsbClose.Click += new System.EventHandler(this.TsbCloseClick);
             // 
             // toolStripSeparator1
             // 
             this.toolStripSeparator1.Name = "toolStripSeparator1";
-            this.toolStripSeparator1.Size = new System.Drawing.Size(6, 32);
+            this.toolStripSeparator1.Size = new System.Drawing.Size(6, 46);
+            // 
+            // tsddbLoad
+            // 
+            this.tsddbLoad.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.tsmiLoadAll,
+            this.tsmiLoadFromSolution});
+            this.tsddbLoad.Image = global::MsCrmTools.FormRelated.Properties.Resources.Dataverse_16x16;
+            this.tsddbLoad.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.tsddbLoad.Name = "tsddbLoad";
+            this.tsddbLoad.Size = new System.Drawing.Size(85, 41);
+            this.tsddbLoad.Text = "Load";
+            this.tsddbLoad.DropDownItemClicked += new System.Windows.Forms.ToolStripItemClickedEventHandler(this.tsddbLoad_DropDownItemClicked);
+            // 
+            // tsmiLoadAll
+            // 
+            this.tsmiLoadAll.Image = global::MsCrmTools.FormRelated.Properties.Resources.Dataverse_16x16;
+            this.tsmiLoadAll.Name = "tsmiLoadAll";
+            this.tsmiLoadAll.Size = new System.Drawing.Size(397, 34);
+            this.tsmiLoadAll.Text = "All libraries and forms";
+            // 
+            // tsmiLoadFromSolution
+            // 
+            this.tsmiLoadFromSolution.Image = global::MsCrmTools.FormRelated.Properties.Resources.Dataverse_16x16;
+            this.tsmiLoadFromSolution.Name = "tsmiLoadFromSolution";
+            this.tsmiLoadFromSolution.Size = new System.Drawing.Size(397, 34);
+            this.tsmiLoadFromSolution.Text = "Libraries and forms from solution(s)";
             // 
             // tsbLoadLibrariesAndScripts
             // 
             this.tsbLoadLibrariesAndScripts.Image = ((System.Drawing.Image)(resources.GetObject("tsbLoadLibrariesAndScripts.Image")));
             this.tsbLoadLibrariesAndScripts.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.tsbLoadLibrariesAndScripts.Name = "tsbLoadLibrariesAndScripts";
-            this.tsbLoadLibrariesAndScripts.Size = new System.Drawing.Size(239, 29);
+            this.tsbLoadLibrariesAndScripts.Size = new System.Drawing.Size(231, 41);
             this.tsbLoadLibrariesAndScripts.Text = "Load Libraries and Forms";
             this.tsbLoadLibrariesAndScripts.Click += new System.EventHandler(this.tsbLoadLibrariesAndScripts_Click);
             // 
             // toolStripSeparator2
             // 
             this.toolStripSeparator2.Name = "toolStripSeparator2";
-            this.toolStripSeparator2.Size = new System.Drawing.Size(6, 32);
+            this.toolStripSeparator2.Size = new System.Drawing.Size(6, 46);
             // 
             // tsbAddCheckedScripts
             // 
             this.tsbAddCheckedScripts.Image = ((System.Drawing.Image)(resources.GetObject("tsbAddCheckedScripts.Image")));
             this.tsbAddCheckedScripts.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.tsbAddCheckedScripts.Name = "tsbAddCheckedScripts";
-            this.tsbAddCheckedScripts.Size = new System.Drawing.Size(199, 29);
+            this.tsbAddCheckedScripts.Size = new System.Drawing.Size(191, 41);
             this.tsbAddCheckedScripts.Text = "Add checked scripts";
             this.tsbAddCheckedScripts.Click += new System.EventHandler(this.tsbAddCheckedScripts_Click);
             // 
             // toolStripSeparator3
             // 
             this.toolStripSeparator3.Name = "toolStripSeparator3";
-            this.toolStripSeparator3.Size = new System.Drawing.Size(6, 32);
+            this.toolStripSeparator3.Size = new System.Drawing.Size(6, 46);
             // 
             // tsbRemoveCheckedScripts
             // 
             this.tsbRemoveCheckedScripts.Image = ((System.Drawing.Image)(resources.GetObject("tsbRemoveCheckedScripts.Image")));
             this.tsbRemoveCheckedScripts.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.tsbRemoveCheckedScripts.Name = "tsbRemoveCheckedScripts";
-            this.tsbRemoveCheckedScripts.Size = new System.Drawing.Size(229, 29);
+            this.tsbRemoveCheckedScripts.Size = new System.Drawing.Size(221, 41);
             this.tsbRemoveCheckedScripts.Text = "Remove checked scripts";
             this.tsbRemoveCheckedScripts.Click += new System.EventHandler(this.tsbRemoveCheckedScripts_Click);
             // 
@@ -144,10 +173,11 @@
             this.columnHeader2,
             this.columnHeader3,
             this.columnHeader4});
+            this.lvLogs.HideSelection = false;
             this.lvLogs.Location = new System.Drawing.Point(0, 0);
             this.lvLogs.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.lvLogs.Name = "lvLogs";
-            this.lvLogs.Size = new System.Drawing.Size(1364, 430);
+            this.lvLogs.Size = new System.Drawing.Size(1364, 426);
             this.lvLogs.TabIndex = 5;
             this.lvLogs.UseCompatibleStateImageBehavior = false;
             this.lvLogs.View = System.Windows.Forms.View.Details;
@@ -278,5 +308,8 @@
         private System.Windows.Forms.ColumnHeader columnHeader4;
         private System.Windows.Forms.SplitContainer splitContainer1;
         private System.Windows.Forms.SplitContainer splitContainer2;
+        private System.Windows.Forms.ToolStripDropDownButton tsddbLoad;
+        private System.Windows.Forms.ToolStripMenuItem tsmiLoadAll;
+        private System.Windows.Forms.ToolStripMenuItem tsmiLoadFromSolution;
     }
 }

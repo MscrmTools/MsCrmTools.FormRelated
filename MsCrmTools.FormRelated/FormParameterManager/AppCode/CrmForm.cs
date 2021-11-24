@@ -2,6 +2,7 @@
 using Microsoft.Xrm.Sdk;
 using Microsoft.Xrm.Sdk.Messages;
 using Microsoft.Xrm.Sdk.Metadata;
+using Microsoft.Xrm.Sdk.Metadata.Query;
 using Microsoft.Xrm.Sdk.Query;
 using System;
 using System.Collections.Generic;
@@ -57,16 +58,64 @@ namespace MsCrmTools.FormParameterManager.AppCode
         /// <param name="service">Microsoft Dynamics CRM organization service</param>
         /// <param name="worker"></param>
         /// <returns>List of forms</returns>
-        public static IEnumerable<CrmForm> GetForms(IOrganizationService service, BackgroundWorker worker = null)
+        public static IEnumerable<CrmForm> GetForms(IOrganizationService service, List<Entity> solutions, BackgroundWorker worker = null)
         {
             if (worker != null && worker.WorkerReportsProgress)
             {
                 worker.ReportProgress(0, "Retrieving entities metadata...");
             }
+            bool filterByEntity = false;
+            if (solutions?.Count > 0)
+            {
+                filterByEntity = true;
 
-            var request = new RetrieveAllEntitiesRequest { EntityFilters = EntityFilters.Entity };
-            var response = (RetrieveAllEntitiesResponse)service.Execute(request);
-            entitiesMetadatas = response.EntityMetadata;
+                var components = service.RetrieveMultiple(new QueryExpression("solutioncomponent")
+                {
+                    ColumnSet = new ColumnSet("objectid"),
+                    NoLock = true,
+                    Criteria = new FilterExpression
+                    {
+                        Conditions =
+                        {
+                            new ConditionExpression("solutionid", ConditionOperator.In, solutions.Select(s => s.Id).ToArray()),
+                            new ConditionExpression("componenttype", ConditionOperator.Equal, 1)
+                        }
+                    }
+                }).Entities;
+
+                var list = components.Select(component => component.GetAttributeValue<Guid>("objectid"))
+                    .ToList();
+
+                if (list.Count > 0)
+                {
+                    EntityQueryExpression entityQueryExpression = new EntityQueryExpression
+                    {
+                        Criteria = new MetadataFilterExpression(LogicalOperator.Or),
+                        Properties = new MetadataPropertiesExpression("DisplayName", "LogicalName", "SchemaName", "IsActivity", "ObjectTypeCode")
+                    };
+
+                    list.ForEach(id =>
+                    {
+                        entityQueryExpression.Criteria.Conditions.Add(new MetadataConditionExpression("MetadataId", MetadataConditionOperator.Equals, id));
+                    });
+
+                    RetrieveMetadataChangesRequest retrieveMetadataChangesRequest = new RetrieveMetadataChangesRequest
+                    {
+                        Query = entityQueryExpression,
+                        ClientVersionStamp = null
+                    };
+
+                    var resp = (RetrieveMetadataChangesResponse)service.Execute(retrieveMetadataChangesRequest);
+
+                    entitiesMetadatas = resp.EntityMetadata.ToArray();
+                }
+            }
+            else
+            {
+                var request = new RetrieveAllEntitiesRequest { EntityFilters = EntityFilters.Entity };
+                var response = (RetrieveAllEntitiesResponse)service.Execute(request);
+                entitiesMetadatas = response.EntityMetadata;
+            }
 
             if (worker != null && worker.WorkerReportsProgress)
             {
@@ -99,6 +148,15 @@ namespace MsCrmTools.FormParameterManager.AppCode
                     }
                 }
             };
+
+            if (filterByEntity)
+            {
+                qe.Criteria.Filters.Add(new FilterExpression(LogicalOperator.Or));
+                foreach (var emd in entitiesMetadatas)
+                {
+                    qe.Criteria.Filters.Last().AddCondition("objecttypecode", ConditionOperator.Equal, emd.ObjectTypeCode.Value);
+                }
+            }
 
             return service.RetrieveMultiple(qe).Entities.Select(e => new CrmForm(e));
         }

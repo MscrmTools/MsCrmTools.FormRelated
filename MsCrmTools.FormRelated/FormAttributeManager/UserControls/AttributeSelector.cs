@@ -1,14 +1,17 @@
 ﻿using Microsoft.Xrm.Sdk;
 using Microsoft.Xrm.Sdk.Messages;
 using Microsoft.Xrm.Sdk.Metadata;
+using Microsoft.Xrm.Sdk.Metadata.Query;
 using Microsoft.Xrm.Sdk.Query;
 using MsCrmTools.FormAttributeManager.AppCode;
+using MsCrmTools.FormRelated.Common;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
 using System.Windows.Forms;
 using XrmToolBox.Extensibility;
+using ListViewItemComparer = MsCrmTools.FormRelated.Common.ListViewItemComparer;
 
 namespace MsCrmTools.FormAttributeManager.UserControls
 {
@@ -39,7 +42,9 @@ namespace MsCrmTools.FormAttributeManager.UserControls
         }
 
         public List<FormInfo> EntityForms { set; private get; }
-        public int LocaleId { get { return localeId; } }
+
+        public int LocaleId
+        { get { return localeId; } }
 
         public List<AttributeMetadata> SelectedAttributes
         {
@@ -63,10 +68,24 @@ namespace MsCrmTools.FormAttributeManager.UserControls
             }
         }
 
-        public IOrganizationService Service { set { service = value; } }
+        public IOrganizationService Service
+        { set { service = value; } }
 
-        public void LoadEntities()
+        public void LoadEntities(bool fromSolution)
         {
+            List<Entity> solutions = new List<Entity>();
+
+            if (fromSolution)
+            {
+                var dialog = new SolutionPicker(service);
+                if (dialog.ShowDialog(this) != DialogResult.OK)
+                {
+                    return;
+                }
+
+                solutions.AddRange(dialog.SelectedSolutions);
+            }
+
             infoPanel = InformationPanel.GetInformationPanel(ParentForm, "Loading entities...", 340, 150);
 
             cbbEntities.Items.Clear();
@@ -74,7 +93,7 @@ namespace MsCrmTools.FormAttributeManager.UserControls
             var worker = new BackgroundWorker();
             worker.DoWork += worker_DoWork;
             worker.RunWorkerCompleted += worker_RunWorkerCompleted;
-            worker.RunWorkerAsync();
+            worker.RunWorkerAsync(solutions);
         }
 
         protected virtual void RaiseAttributeSelected(AttributeSelectedEventArgs e)
@@ -205,12 +224,61 @@ namespace MsCrmTools.FormAttributeManager.UserControls
 
         private void worker_DoWork(object sender, DoWorkEventArgs e)
         {
+            var settings = service.RetrieveMultiple(new QueryExpression("usersettings") { ColumnSet = new ColumnSet("localeid") });
+            localeId = settings.Entities.First().GetAttributeValue<int>("localeid");
+
+            var solutions = (List<Entity>)e.Argument;
+
+            if (solutions?.Count > 0)
+            {
+                var components = service.RetrieveMultiple(new QueryExpression("solutioncomponent")
+                {
+                    ColumnSet = new ColumnSet("objectid"),
+                    NoLock = true,
+                    Criteria = new FilterExpression
+                    {
+                        Conditions =
+                        {
+                            new ConditionExpression("solutionid", ConditionOperator.In, solutions.Select(s => s.Id).ToArray()),
+                            new ConditionExpression("componenttype", ConditionOperator.Equal, 1)
+                        }
+                    }
+                }).Entities;
+
+                var list = components.Select(component => component.GetAttributeValue<Guid>("objectid"))
+                    .ToList();
+
+                if (list.Count > 0)
+                {
+                    EntityQueryExpression entityQueryExpression = new EntityQueryExpression
+                    {
+                        Criteria = new MetadataFilterExpression(LogicalOperator.Or),
+                        Properties = new MetadataPropertiesExpression("DisplayName", "LogicalName", "SchemaName", "IsActivity", "ObjectTypeCode")
+                    };
+
+                    list.ForEach(id =>
+                    {
+                        entityQueryExpression.Criteria.Conditions.Add(new MetadataConditionExpression("MetadataId", MetadataConditionOperator.Equals, id));
+                    });
+
+                    RetrieveMetadataChangesRequest retrieveMetadataChangesRequest = new RetrieveMetadataChangesRequest
+                    {
+                        Query = entityQueryExpression,
+                        ClientVersionStamp = null
+                    };
+
+                    var resp = (RetrieveMetadataChangesResponse)service.Execute(retrieveMetadataChangesRequest);
+
+                    e.Result = resp.EntityMetadata.Select(emd => new EntityInfo { Metadata = emd });
+                    return;
+                }
+
+                e.Result = new List<EntityInfo>();
+                return;
+            }
+
             var request = new RetrieveAllEntitiesRequest { EntityFilters = EntityFilters.Entity };
             var response = (RetrieveAllEntitiesResponse)service.Execute(request);
-
-            var settings =
-                service.RetrieveMultiple(new QueryExpression("usersettings") { ColumnSet = new ColumnSet("localeid") });
-            localeId = settings.Entities.First().GetAttributeValue<int>("localeid");
 
             e.Result = response.EntityMetadata.Select(emd => new EntityInfo { Metadata = emd });
         }
